@@ -1,61 +1,61 @@
 # ProtoPNet
-Etap 1: Projektowanie Strony Internetowej
-Analiza Wymagan Strony:
-1. miejsce na wrzucenie obrazka przez uzytkownika
-2. zwrocenie predykcji
-3. ocenianie przez uzytkownika predykcji
+## Etap 1: Projektowanie strony internetowej
 
-Określenie funkcji, jakie ma pełnić strona.
-@GetMapping("/greating") showGreating // strona glowna
+### Analiza wymagań strony:
+1. Miejsce na wrzucenie obrazka przez użytkownika,
+2. Zwrócenie predykcji,
+3. Ocenianie przez użytkownika predykcji.
+
+### Określenie funkcji, jakie ma pełnić strona:
+```
+@GetMapping("/greating") showGreating // strona główna
 @PostMapping("/greating") getImageFromUser 
 @GetMapping("/showPrediction") showPrediction
 @PostMapping("/showPrediction") getUserEvaluation
+```
+### Projekt interfejsu:
+Użytkownik wysyła obrazek, a serwer wysyła predykcje oraz pobiera opinie zwrotną.
 
-Projekt Interfejsu:
-uzytkownic wysyla obrazek, a serwer wysyla predykcji oraz pobiera opinie zwrotna
+## Etap 2: Implementacja strony internetowej
+### Wybór technologii:
+* Model - Python,
+* API - Java, Spring Boot,
+* Frontend - HTML, CSS, JavaScript lub TypeScript.
 
-Etap 2: Implementacja Strony Internetowej
-Wybór Technologii:
-model - python
-API - java, spring boot, 
-frontend - HTML, CSS, javaScript or typeScript
+## Etap 3: Implementacja interfejsu
 
-Etap 3: Implementacja Interfejsu
-napisanie skryptu python dla modeli
-Napisanie kodu dla interfejsu użytkownika
-Dodanie formularza do przesyłania zdjec
-Dodanie formularza do odbierania opinii
-Napisanie API
+1. Napisanie skryptu Python dla modeli,
+2. Napisanie kodu dla interfejsu użytkownika,
+3. Dodanie formularza do przesyłania zdjęć,
+4. Dodanie formularza do odbierania opinii,
+5. Napisanie API.
 
-Etap 4: Testowanie i Optymalizacja
-Testy jednostkowe:
+## Etap 4: Testowanie i optymalizacja
+### Testy jednostkowe:
+* Przetestowanie interakcji użytkownika na różnych przeglądarkach,
+* Sprawdzenie poprawności przesyłania danych i odbierania odpowiedzi.
 
-Przetestowanie interakcji użytkownika na roznych przegladarkach
-Sprawdzenie poprawnosci przesylania danych i odbierania odpowiedzi
-Optymalizacja:
+### Optymalizacja: 
+* Optymalizacja kodu modelu i API dla lepszej wydajności.
 
-Optymalizacja kodu modelu i API dla lepszej wydajności
+## Etap 5: Wdrożenie 
+### Wdrożenie strony: 
+* Umieszczenie strony internetowej na serwerze.
 
-Etap 5: Wdrozenie 
-Wdrozenie Strony:
-Umieszczenie strony internetowej na serwerze
+### Konfiguracja serwera: 
+* Ustawienie konfiguracji serwera dla bezpiecznej komunikacji.
 
-Konfiguracja Serwera:
-Ustawienie konfiguracji serwera dla bezpiecznej komunikacji
+## Etap 6: Dokumentacja
+### Instrukcja użytkownika: 
+* Przygotowanie instrukcji dla użytkowników, jak korzystać z interfejsu.
 
-Etap 6: Dokumentacja
+### Dokumentacja techniczna: 
+* Sporządzenie dokumentacji technicznej dla strony internetowej.
 
-Instrukcja Uzytkownika:
-Przygotowanie instrukcji dla użytkownikow, jak korzystac z interfejsu
+## Etap 7: Zakończenie projektu
+### Przegląd końcowy:
+* Ostatnie testy i poprawki,
+* Spotkanie z Opiekunem Projektu w celu przedstawienia rezultatów.
 
-Dokumentacja Techniczna:
-Sporzadzenie dokumentacji technicznej dla strony internetowej
-
-Etap 7: Zakonczenie Projektu
-Przeglad Koncowy:
-
-Ostatnie testy i poprawki
-Spotkanie z Opiekunem Projektu w celu przedstawienia rezultatow
-Wsparcie Techniczne:
-
-Przygotowanie planu wsparcia technicznego dla uzytkownikow
+### Wsparcie techniczne:
+* Przygotowanie planu wsparcia technicznego dla użytkowników.
