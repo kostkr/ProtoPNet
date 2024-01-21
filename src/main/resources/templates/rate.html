@@ -7,21 +7,25 @@
     <title>ProtoPNet</title>
     <style>
         .image-frame {
-            border: 2px solid #ccc;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            align-items: center;
         }
 
         .image-frame img {
-            width: 48%;
-            height: auto;
+            max-width: 100%;
+            width: auto;
             border-radius: 5px;
             margin-bottom: 10px;
         }
+
+        @media (min-width: 768px) {
+            .image-frame img {
+                width: 40%;
+            }
+        }
     </style>
+
 </head>
 <body>
 <div class="container-fluid p-3 mb-4 bg-dark text-white text-center">
@@ -71,12 +75,11 @@
         });
     }
 
-
     function showNextImages(images) {
         const imageFrame = document.getElementById('imageFrame');
         imageFrame.innerHTML = '';
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < images.length; i++) {
             if (i < images.length) {
                 const imgElement = document.createElement('img');
                 imgElement.src = `data:image/jpeg;base64,${images[i].image}`;

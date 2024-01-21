@@ -99,13 +99,10 @@
     }
 
     function uploadImages() {
-        // Реализуйте здесь код для отправки изображений на сервер
         const container = document.getElementById('imageContainer');
         const images = container.querySelectorAll('img');
 
         images.forEach(img => {
-            // Отправить каждое изображение на сервер
-            // Например, используя Fetch API или другие средства передачи данных на сервер
             console.log('Uploading image:', img.src);
         });
     }

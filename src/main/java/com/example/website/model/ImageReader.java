@@ -20,6 +20,23 @@ public class ImageReader {
             File file2 = new File("E:\\university_subject\\pz\\webSite\\src\\test\\testImage2.jpg");
             MyImage myImage2 = new MyImage(2, convertToBase64(ImageIO.read(file2)));
             images.add(myImage2);
+
+            File file3 = new File("E:\\university_subject\\pz\\webSite\\src\\test\\testImage2.jpg");
+            MyImage myImage3 = new MyImage(3, convertToBase64(ImageIO.read(file3)));
+            images.add(myImage3);
+
+            File file4 = new File("E:\\university_subject\\pz\\webSite\\src\\test\\testImage2.jpg");
+            MyImage myImage4 = new MyImage(4, convertToBase64(ImageIO.read(file4)));
+            images.add(myImage4);
+
+            File file5 = new File("E:\\university_subject\\pz\\webSite\\src\\test\\testImage2.jpg");
+            MyImage myImage5 = new MyImage(5, convertToBase64(ImageIO.read(file5)));
+            images.add(myImage5);
+
+            File file6 = new File("E:\\university_subject\\pz\\webSite\\src\\test\\testImage2.jpg");
+            MyImage myImage6 = new MyImage(6, convertToBase64(ImageIO.read(file6)));
+            images.add(myImage6);
+
         } catch (IOException e) {
             System.err.println("Images unread");
         }
