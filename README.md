@@ -8,10 +8,9 @@
 
 ### Określenie funkcji, jakie ma pełnić strona:
 ```
-@GetMapping("/greating") showGreating // strona główna
-@PostMapping("/greating") getImageFromUser 
-@GetMapping("/showPrediction") showPrediction
-@PostMapping("/showPrediction") getUserEvaluation
+@GetMapping("/") showRate
+@GetMapping("/api/getImages") getImages
+@PostMapping("/api/rateImage") rateImage 
 ```
 ### Projekt interfejsu:
 Użytkownik wysyła obrazek, a serwer wysyła predykcje oraz pobiera opinie zwrotną.
@@ -59,3 +58,6 @@ Użytkownik wysyła obrazek, a serwer wysyła predykcje oraz pobiera opinie zwro
 
 ### Wsparcie techniczne:
 * Przygotowanie planu wsparcia technicznego dla użytkowników.
+
+## Start 
+configure application.properties
