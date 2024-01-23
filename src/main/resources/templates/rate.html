@@ -13,7 +13,7 @@
         }
 
         .image-frame img {
-            max-width: 100%;
+            max-width: 40%;
             width: auto;
             border-radius: 5px;
             margin-bottom: 10px;
@@ -21,7 +21,7 @@
 
         @media (min-width: 768px) {
             .image-frame img {
-                width: 40%;
+                width: 30%;
             }
         }
     </style>
@@ -46,8 +46,14 @@
 
 <script>
     let imageIndex
+
+    function showLoadingSpinner() {
+        const imageFrame = document.getElementById('imageFrame');
+        imageFrame.innerHTML = '<p>Loading...</p>';
+    }
+
     async function fetchImages() {
-        //
+        showLoadingSpinner();
         const response = await fetch('/api/getImages');
         const images = await response.json();
         imageIndex = images[0].index;
@@ -83,7 +89,7 @@
             if (i < images.length) {
                 const imgElement = document.createElement('img');
                 imgElement.src = `data:image/jpeg;base64,${images[i].image}`;
-                imgElement.alt = `Image ${i + 1} - index: ${images[i].index}`;
+                imgElement.alt = `Image ${i} - index: ${images[i].index}`;
                 imageFrame.appendChild(imgElement);
             }
         }
