@@ -86,12 +86,21 @@
         imageFrame.innerHTML = '';
 
         for (let i = 0; i < images.length; i++) {
-            if (i < images.length) {
-                const imgElement = document.createElement('img');
-                imgElement.src = `data:image/jpeg;base64,${images[i].image}`;
-                imgElement.alt = `Image ${i} - index: ${images[i].index}`;
-                imageFrame.appendChild(imgElement);
+            const imgElement = document.createElement('img');
+            const label = document.createElement('p');
+            imgElement.src = `data:image/jpeg;base64,${images[i].image}`;
+            imgElement.alt = `Image ${i} - index: ${images[i].index}`;
+
+            if (i === 0) {// Add "original" label to the first image
+                label.textContent = 'Original image';
+                label.style.fontWeight = 'bold';
+            } else {// Add "top n" label to the rest of the images
+                label.textContent = `Top ${i}`;
+                label.style.fontWeight = 'bold';
             }
+
+            imageFrame.appendChild(label);
+            imageFrame.appendChild(imgElement);
         }
     }
 
