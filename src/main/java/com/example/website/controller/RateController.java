@@ -1,7 +1,7 @@
 package com.example.website.controller;
 
 import com.example.website.model.ImageReader;
-import com.example.website.model.MyImage;
+import com.example.website.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ public class RateController {
     ImageReader imageReader;
 
     @GetMapping("/getImages")
-    public List<MyImage> getImages() {
+    public List<Image> getImages() {
         return imageReader.readImages();
     }
 

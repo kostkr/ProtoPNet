@@ -1,13 +1,16 @@
 package com.example.website.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyImage {
-    long index; // unique index
+public class Image {
+    String name;
     String image;
+    String details;
 }

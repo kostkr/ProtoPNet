@@ -6,15 +6,12 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Random;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class ImageReader {
-
-    private long uniqueImageIndex = 0L;
 
     @Value("${script.path}")
     private String scriptPath;
@@ -28,50 +25,104 @@ public class ImageReader {
     @Value("${images.base.path}")
     private String baseImagesPath;
 
-    public List<MyImage> readImages() {
-        ArrayList<MyImage> images = new ArrayList<>(11);
-        try{
-            // find image to analyze
-            String imgPath = findPathImageToAnalyze();
+    public void showUserAnswer(String data){
+        System.out.println(data);
+    }
 
-            // config model script
-            ProcessBuilder processBuilder = new ProcessBuilder(
-                    "python", scriptPath,
-                    "-modeldir", this.modeldirPath, "-model", this.modelName, "-imgpath", imgPath);
+    public List<Image> readImages() {
+        return prepareImages(invokeScript());
+    }
 
-            //start model script
-            Process process = processBuilder.start();
+    private List<Image> prepareImages(List<String> data) {
+        List<Image> images = new ArrayList<>(11);
 
-            // read images from script
-            InputStream inputStream = process.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        try {
+            //prepare original image
+            //prepare original class name
+            Path imagePathObj = Paths.get(data.get(0));
+            Path basepathObj = Paths.get(baseImagesPath);
 
-            String line;
-            StringBuilder outputBuilder = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                outputBuilder.append(line);
+            Path relativePath = basepathObj.relativize(imagePathObj);
+
+            String className = relativePath.getName(0).toString().replace('_', ' ');
+            int lastDotIndex = className.lastIndexOf(".");
+            if (lastDotIndex != -1 && lastDotIndex < className.length() - 1) {
+                className = className.substring(lastDotIndex + 1);
             }
 
-            File file = new File(imgPath);// add original image
-            MyImage myImage = new MyImage(getUniqueImageIndex(), convertToBase64(ImageIO.read(file)));
-            images.add(myImage);
+            File fileImage = new File(data.get(0));
 
-            long index = 1;// add predicted images
-            for (String image : outputBuilder.toString().split(", ")) {
-                images.add(new MyImage(index, image));
-                ++index;
+            Image originalImage = Image.builder()
+                    .name(className)
+                    .image(convertToBase64(ImageIO.read(fileImage), "jpg"))
+                    .details("")
+                    .build();
+
+            images.add(originalImage);
+
+            //prepare prediction images
+            File baseDir = new File(baseImagesPath);
+            List<String> classNames = Arrays.stream(Objects.requireNonNull(baseDir.list()))// index n-1
+                    .map(s -> s.split("\\.")[1])
+                    .toList();
+
+            Image predictionImage;
+            int classIndex;
+            File imageFile;
+            String details;
+            for(int i = 1; i < data.size(); i+= 5){
+                classIndex = Integer.parseInt(data.get(i));
+                imageFile = new File(data.get(i+1));
+                details = data.get(i+2) + '\n'
+                        + data.get(i+3) + '\n'
+                        + data.get(i+4);
+
+                predictionImage = Image.builder()
+                        .name(classNames.get(classIndex - 1).replace('_', ' '))
+                        .image(convertToBase64(ImageIO.read(imageFile), "png"))
+                        .details(details)
+                        .build();
+
+                images.add(predictionImage);
             }
-
-            int exitCode = process.waitFor();
-            //System.out.println("ProtoPNet script exited with code: " + exitCode);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("error read images from: " + baseImagesPath);
+            throw new RuntimeException(e);
         }
 
         return images;
     }
+    private List<String> invokeScript(){
+        List<String> data = new ArrayList<>(51);
 
-    public String findPathImageToAnalyze(){
+        try{
+            String imgPath = pathImageToAnalyze();
+
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    "python", scriptPath,
+                    "-modeldir", this.modeldirPath, "-model", this.modelName, "-imgpath", imgPath);
+
+            Process process = processBuilder.start();
+
+            data.add(imgPath);// add path to original image
+
+            InputStream inputStream = process.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                data.add(line);
+            }
+
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            System.err.println("error invoke script or read output");
+        }
+
+        return data;
+    }
+
+    public String pathImageToAnalyze(){
         File randomFolder = getRandomFolder(baseImagesPath);
 
         if (randomFolder != null) {
@@ -86,10 +137,6 @@ public class ImageReader {
         }
 
         return "";
-    }
-
-    public void showUserAnswer(String data){
-        System.out.println(data);
     }
 
     private File getRandomFolder(String basePath) {
@@ -113,25 +160,19 @@ public class ImageReader {
             int randomIndex = random.nextInt(images.length);
             return images[randomIndex];
         }
+
         return null;
     }
 
-    private String convertToBase64(BufferedImage image) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "jpg", baos);
-        byte[] imageBytes = baos.toByteArray();
+    private String convertToBase64(BufferedImage image, String formatName) {
+        byte[] imageBytes = new byte[0];
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, formatName, baos);
+            imageBytes = baos.toByteArray();
+        } catch (IOException e) {
+            System.err.println("error image convert");
+        }
         return Base64.getEncoder().encodeToString(imageBytes);
-    }
-
-    private long getUniqueImageIndex(){
-        increaseUniqueIndex();
-        return uniqueImageIndex == 0 ? 0 : uniqueImageIndex - 1;
-    }
-
-    private void increaseUniqueIndex(){
-        if(uniqueImageIndex < Long.MAX_VALUE)
-            uniqueImageIndex += 1;
-        else
-            uniqueImageIndex = 0;
     }
 }

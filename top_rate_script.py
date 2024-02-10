@@ -5,24 +5,16 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from torch.autograd import Variable
 import numpy as np
-import matplotlib.pyplot as plt
-import cv2
 from PIL import Image
 
 import re
 
 import os
-import copy
 
-from helpers import makedir, find_high_activation_crop
 import train_and_test as tnt
-from log import create_logger
-from preprocess import mean, std, preprocess_input_function, undo_preprocess_input_function
+from preprocess import mean, std
 
 import argparse
-
-import base64
-from PIL import Image
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-gpuid', nargs=1, type=str, default='0')
@@ -97,37 +89,11 @@ prototype_img_identity = prototype_info[:, -1]
 prototype_max_connection = torch.argmax(ppnet.last_layer.weight, dim=0)
 prototype_max_connection = prototype_max_connection.cpu().numpy()
 
-##### HELPER FUNCTIONS FOR PLOTTING
-def save_preprocessed_img(fname, preprocessed_imgs, index=0):
-    img_copy = copy.deepcopy(preprocessed_imgs[index:index+1])
-    undo_preprocessed_img = undo_preprocess_input_function(img_copy)
-    undo_preprocessed_img = undo_preprocessed_img[0]
-    undo_preprocessed_img = undo_preprocessed_img.detach().cpu().numpy()
-    undo_preprocessed_img = np.transpose(undo_preprocessed_img, [1,2,0])
-    
-    plt.imsave(fname, undo_preprocessed_img)
-    return undo_preprocessed_img
-
-def save_prototype_original_img_with_bbox( epoch, index,
-                                          bbox_height_start, bbox_height_end,
-                                          bbox_width_start, bbox_width_end, color=(0, 255, 255)):
-    
-    p_img_bgr = cv2.imread(os.path.join(load_img_dir, 'epoch-'+str(epoch), 'prototype-img-original'+str(index)+'.png'))
-
-    cv2.rectangle(p_img_bgr, (bbox_width_start, bbox_height_start), (bbox_width_end-1, bbox_height_end-1),
-                  color, thickness=2)
-    
-    retval, buffer = cv2.imencode('.jpg', p_img_bgr)
-    img_base64 = base64.b64encode(buffer).decode('utf-8')
-
-    print(img_base64, ", ")
-    
-
 # load the test image and forward it through the network
 preprocess = transforms.Compose([
-   transforms.Resize((img_size,img_size)),
-   transforms.ToTensor(),
-   normalize
+    transforms.Resize((img_size,img_size)),
+    transforms.ToTensor(),
+    normalize
 ])
 
 img_pil = Image.open(test_image_path)
@@ -156,12 +122,10 @@ correct_cls = tables[idx][1]
 ##### MOST ACTIVATED (NEAREST) 10 PROTOTYPES OF THIS IMAGE
 array_act, sorted_indices_act = torch.sort(prototype_activations[idx])
 for i in range(1,11):
-    save_prototype_original_img_with_bbox(
-                                          epoch=start_epoch_number,
-                                          index=sorted_indices_act[-i].item(),
-                                          bbox_height_start=prototype_info[sorted_indices_act[-i].item()][1],
-                                          bbox_height_end=prototype_info[sorted_indices_act[-i].item()][2],
-                                          bbox_width_start=prototype_info[sorted_indices_act[-i].item()][3],
-                                          bbox_width_end=prototype_info[sorted_indices_act[-i].item()][4],
-                                          color=(0, 255, 255))
-    
+    image_path = os.path.join(load_img_dir, 'epoch-'+str(start_epoch_number), 'prototype-img-original'+str(sorted_indices_act[-i].item())+'.png')
+
+    print(prototype_img_identity[sorted_indices_act[-i].item()])# prototype class identity
+    print(image_path) #image path
+    print('prototype index: {0}'.format(sorted_indices_act[-i].item()))
+    print('activation value (similarity score): {0}'.format(array_act[-i]))
+    print('last layer connection with predicted class: {0}'.format(ppnet.last_layer.weight[predicted_cls][sorted_indices_act[-i].item()]))
