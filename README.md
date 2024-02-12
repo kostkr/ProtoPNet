@@ -1,63 +1,62 @@
 # ProtoPNet
-## Etap 1: Projektowanie strony internetowej
+## Stage 1: Web Page Design
 
-### Analiza wymagań strony:
-1. Miejsce na wrzucenie obrazka przez użytkownika,
-2. Zwrócenie predykcji,
-3. Ocenianie przez użytkownika predykcji.
+### Website Requirements Analysis:
+1. Space for user image upload,
+2. Prediction output display,
+3. User rating of predictions.
 
-### Określenie funkcji, jakie ma pełnić strona:
-```
-@GetMapping("/") showRate
-@GetMapping("/api/getImages") getImages
-@PostMapping("/api/rateImage") rateImage 
-```
-### Projekt interfejsu:
-Użytkownik wysyła obrazek, a serwer wysyła predykcje oraz pobiera opinie zwrotną.
+### Defined Functions for the Website:
+- @GetMapping("/") showRate
+- @GetMapping("/api/getImages") getImages
+- @PostMapping("/api/rateImage") rateImage
 
-## Etap 2: Implementacja strony internetowej
-### Wybór technologii:
+### Interface Design:
+User uploads an image, and the server sends predictions while also collecting user feedback.
+
+## Stage 2: Implementation of the Website
+### Technology Selection:
 * Model - Python,
 * API - Java, Spring Boot,
-* Frontend - HTML, CSS, JavaScript lub TypeScript.
+* Frontend - HTML, CSS, JavaScript
 
-## Etap 3: Implementacja interfejsu
+## Stage 3: Implementation of the Interface
 
-1. Napisanie skryptu Python dla modeli,
-2. Napisanie kodu dla interfejsu użytkownika,
-3. Dodanie formularza do przesyłania zdjęć,
-4. Dodanie formularza do odbierania opinii,
-5. Napisanie API.
+1. Python script development for models,
+2. Code development for the user interface,
+3. Addition of a form for image upload,
+4. Addition of a form for receiving feedback,
+5. API development.
 
-## Etap 4: Testowanie i optymalizacja
-### Testy jednostkowe:
-* Przetestowanie interakcji użytkownika na różnych przeglądarkach,
-* Sprawdzenie poprawności przesyłania danych i odbierania odpowiedzi.
+## Stage 4: Testing and Optimization
+### Unit Testing:
+* Testing user interaction on various browsers,
+* Verification of data transmission correctness and response reception.
 
-### Optymalizacja: 
-* Optymalizacja kodu modelu i API dla lepszej wydajności.
+### Optimization:
+* Model and API code optimization for better performance.
 
-## Etap 5: Wdrożenie 
-### Wdrożenie strony: 
-* Umieszczenie strony internetowej na serwerze.
+## Stage 5: Deployment
+### Website Deployment:
+* Hosting the website on a server.
 
-### Konfiguracja serwera: 
-* Ustawienie konfiguracji serwera dla bezpiecznej komunikacji.
+### Server Configuration:
+* Configuring the server for secure communication.
 
-## Etap 6: Dokumentacja
-### Instrukcja użytkownika: 
-* Przygotowanie instrukcji dla użytkowników, jak korzystać z interfejsu.
+## Stage 6: Documentation
+### User Guide:
+* Preparing instructions for users on how to use the interface.
 
-### Dokumentacja techniczna: 
-* Sporządzenie dokumentacji technicznej dla strony internetowej.
+### Technical Documentation:
+* Creating technical documentation for the website.
 
-## Etap 7: Zakończenie projektu
-### Przegląd końcowy:
-* Ostatnie testy i poprawki,
-* Spotkanie z Opiekunem Projektu w celu przedstawienia rezultatów.
+## Stage 7: Project Conclusion
+### Final Review:
+* Final tests and adjustments,
+* Meeting with the Project Supervisor to present results.
 
-### Wsparcie techniczne:
-* Przygotowanie planu wsparcia technicznego dla użytkowników.
+### Technical Support:
+* Preparing a technical support plan for users.
 
-## Start 
-configure application.properties
+## Start
+Configure `application.properties`.
