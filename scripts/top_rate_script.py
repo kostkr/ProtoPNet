@@ -2,7 +2,6 @@
 import torch
 import torch.utils.data
 import torchvision.transforms as transforms
-import torchvision.datasets as datasets
 from torch.autograd import Variable
 import numpy as np
 from PIL import Image
@@ -11,7 +10,6 @@ import re
 
 import os
 
-import train_and_test as tnt
 from preprocess import mean, std
 
 import argparse
@@ -58,25 +56,6 @@ class_specific = True
 
 normalize = transforms.Normalize(mean=mean,
                                  std=std)
-
-# load the test data and check test accuracy
-from settings import test_dir
-if check_test_accu:
-    test_batch_size = 100
-
-    test_dataset = datasets.ImageFolder(
-        test_dir,
-        transforms.Compose([
-            transforms.Resize(size=(img_size, img_size)),
-            transforms.ToTensor(),
-            normalize,
-        ]))
-    test_loader = torch.utils.data.DataLoader(
-        test_dataset, batch_size=test_batch_size, shuffle=True,
-        num_workers=4, pin_memory=False)
-
-    accu = tnt.test(model=ppnet_multi, dataloader=test_loader,
-                    class_specific=class_specific, log=print)
 
 ##### SANITY CHECK
 # confirm prototype class identity
